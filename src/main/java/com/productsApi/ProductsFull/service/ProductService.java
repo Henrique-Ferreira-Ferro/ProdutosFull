@@ -7,6 +7,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.productsApi.ProductsFull.Exceptions.BadRequestException;
 import com.productsApi.ProductsFull.model.ProductEntity;
 import com.productsApi.ProductsFull.repository.ProductRepository;
 
@@ -19,7 +20,8 @@ public class ProductService {
 	public Optional<ProductEntity> findProductById(Long id){
 		var product = productRepository.findById(id);
 		if(!product.isPresent()) {
-			throw new ObjectNotFoundException(product.get().getId(), ProductEntity.class.getName());
+			//throw new ObjectNotFoundException(product.get().getId(), ProductEntity.class.getName());
+			throw new ObjectNotFoundException(id, ProductEntity.class.getName());
 		}
 		return product;
 	}
@@ -31,10 +33,10 @@ public class ProductService {
 	
 	public ProductEntity createProduct(ProductEntity product) {
 		if(product.getName().isEmpty() || product.getName().isBlank()) {
-			throw new RuntimeException("O nome precisa estar presente!");
+			throw new BadRequestException("O nome precisa estar presente!");
 		}
 		if(product.getPrice() == null || product.getPrice().isBlank()) {
-			throw new RuntimeException("O produto precisa ter preço!");
+			throw new BadRequestException("O produto precisa ter preço!");
 		}
 		return productRepository.save(product);
 	}
@@ -43,10 +45,10 @@ public class ProductService {
 	public ProductEntity updateProduct(ProductEntity product, Long id) {
 		
 		if(product.getName().isEmpty() || product.getName().isBlank()) {
-            throw new IllegalArgumentException("O nome precisa estar presente!");
+            throw new BadRequestException("O nome precisa estar presente!");
 		}
 		if(product.getPrice() == null || product.getPrice().isBlank()) {
-            throw new IllegalArgumentException("O produto precisa ter um preço válido!");
+            throw new BadRequestException("O produto precisa ter um preço válido!");
 		}
 			
 		var productAlt = productRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, ProductEntity.class.getName()));
@@ -66,7 +68,7 @@ public class ProductService {
 		var product = productRepository.findById(id);
 		
 		if(!product.isPresent()) {
-			throw new ObjectNotFoundException(product.get().getId(), ProductEntity.class.getName());
+			throw new ObjectNotFoundException(id, ProductEntity.class.getName());
 		}
 		
 		productRepository.deleteById(id);
