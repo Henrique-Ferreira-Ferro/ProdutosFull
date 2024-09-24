@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.productsApi.ProductsFull.dto.ProductDto;
 import com.productsApi.ProductsFull.model.ProductEntity;
 import com.productsApi.ProductsFull.service.ProductService;
 
@@ -24,22 +25,22 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/{id}")
-	public Optional<ProductEntity> findProductById(@PathVariable Long id){
+	public ProductDto findProductById(@PathVariable Long id){
 		return productService.findProductById(id);
 	}
 	
 	@GetMapping
-	public List<ProductEntity> findAllProducts(){
+	public List<ProductDto> findAllProducts(){
 		return productService.findAllProducts();
 	}
 
 	@PostMapping("/create")
-	public ProductEntity createProduct(@RequestBody ProductEntity product) {
+	public ProductDto createProduct(@RequestBody ProductDto product) {
 		return productService.createProduct(product);
 	}
 
 	@PutMapping("/update/{id}")
-	public ProductEntity updateProduct(@RequestBody ProductEntity product, @PathVariable  Long id) {
+	public ProductDto updateProduct(@RequestBody ProductDto product, @PathVariable  Long id) {
 		return productService.updateProduct(product, id);
 	}
 

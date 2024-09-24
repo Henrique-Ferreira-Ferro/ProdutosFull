@@ -1,5 +1,6 @@
 package com.productsApi.ProductsFull.model;
 
+import com.productsApi.ProductsFull.dto.ProductDto;
 import com.productsApi.ProductsFull.enums.Category;
 
 import jakarta.persistence.Column;
@@ -19,6 +20,7 @@ import lombok.Data;
 @Entity
 public class ProductEntity {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,7 +38,20 @@ public class ProductEntity {
 	@Column(name = "category", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Category category;
+
+	public ProductEntity() {
+		
+	}
+	
+	public ProductEntity(ProductDto dto) {
+		this.id = dto.getId();
+		this.name = dto.getName();
+		this.description = dto.getDescription();
+		this.price = dto.getPrice();
+		this.category = dto.getCategory();
+	}
 	
 	
+
 	
 }
